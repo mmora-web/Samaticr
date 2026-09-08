@@ -20,6 +20,12 @@
 
   const sections = document.querySelectorAll('section[id]');
 
+  function t(key) {
+    return (window.SamatiI18n && typeof window.SamatiI18n.t === 'function')
+      ? window.SamatiI18n.t(key)
+      : key;
+  }
+
   /* ----------------------------------------------------------
      Año dinámico en footer
      ---------------------------------------------------------- */
@@ -40,12 +46,24 @@
 
   function setActiveNavLink() {
     const isContactPage = document.body.classList.contains('page-contact');
+    const isServicesPage = document.body.classList.contains('page-services');
 
     if (isContactPage) {
       navLinks.forEach(function (link) {
         link.classList.remove('active');
         const href = link.getAttribute('href');
         if (href === 'contacto.html' || href.endsWith('/contacto.html')) {
+          link.classList.add('active');
+        }
+      });
+      return;
+    }
+
+    if (isServicesPage) {
+      navLinks.forEach(function (link) {
+        link.classList.remove('active');
+        const href = link.getAttribute('href');
+        if (href === 'servicios.html' || href.endsWith('/servicios.html')) {
           link.classList.add('active');
         }
       });
@@ -233,14 +251,14 @@
   function toggleNav() {
     const isOpen = nav.classList.toggle('open');
     navToggle.setAttribute('aria-expanded', isOpen);
-    navToggle.setAttribute('aria-label', isOpen ? 'Cerrar menú de navegación' : 'Abrir menú de navegación');
+    navToggle.setAttribute('aria-label', isOpen ? t('nav.toggle.close') : t('nav.toggle.open'));
     document.body.style.overflow = isOpen ? 'hidden' : '';
   }
 
   function closeNav() {
     nav.classList.remove('open');
     navToggle.setAttribute('aria-expanded', 'false');
-    navToggle.setAttribute('aria-label', 'Abrir menú de navegación');
+    navToggle.setAttribute('aria-label', t('nav.toggle.open'));
     document.body.style.overflow = '';
   }
 
@@ -282,8 +300,8 @@
       el: document.getElementById('nombre'),
       errorEl: document.getElementById('error-nombre'),
       validate: function (value) {
-        if (!value.trim()) return 'El nombre completo es obligatorio.';
-        if (value.trim().length < 3) return 'El nombre debe tener al menos 3 caracteres.';
+        if (!value.trim()) return t('form.error.nombre.required');
+        if (value.trim().length < 3) return t('form.error.nombre.short');
         return '';
       }
     },
@@ -291,9 +309,9 @@
       el: document.getElementById('email'),
       errorEl: document.getElementById('error-email'),
       validate: function (value) {
-        if (!value.trim()) return 'El correo electrónico es obligatorio.';
+        if (!value.trim()) return t('form.error.email.required');
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(value.trim())) return 'Ingresa un correo electrónico válido.';
+        if (!emailRegex.test(value.trim())) return t('form.error.email.invalid');
         return '';
       }
     },
@@ -301,9 +319,9 @@
       el: document.getElementById('telefono'),
       errorEl: document.getElementById('error-telefono'),
       validate: function (value) {
-        if (!value.trim()) return 'El teléfono es obligatorio.';
+        if (!value.trim()) return t('form.error.telefono.required');
         const phoneRegex = /^[\d\s\-+().]{7,20}$/;
-        if (!phoneRegex.test(value.trim())) return 'Ingresa un número de teléfono válido.';
+        if (!phoneRegex.test(value.trim())) return t('form.error.telefono.invalid');
         return '';
       }
     },
@@ -311,7 +329,7 @@
       el: document.getElementById('asunto'),
       errorEl: document.getElementById('error-asunto'),
       validate: function (value) {
-        if (!value.trim()) return 'El asunto es obligatorio.';
+        if (!value.trim()) return t('form.error.asunto.required');
         return '';
       }
     },
@@ -319,7 +337,7 @@
       el: document.getElementById('servicio'),
       errorEl: document.getElementById('error-servicio'),
       validate: function (value) {
-        if (!value.trim()) return 'Selecciona un área de consulta.';
+        if (!value.trim()) return t('form.error.servicio.required');
         return '';
       }
     },
@@ -327,8 +345,8 @@
       el: document.getElementById('mensaje'),
       errorEl: document.getElementById('error-mensaje'),
       validate: function (value) {
-        if (!value.trim()) return 'El mensaje es obligatorio.';
-        if (value.trim().length < 10) return 'El mensaje debe tener al menos 10 caracteres.';
+        if (!value.trim()) return t('form.error.mensaje.required');
+        if (value.trim().length < 10) return t('form.error.mensaje.short');
         return '';
       }
     }
@@ -420,14 +438,14 @@
       hideFormFeedback();
 
       if (!validateForm()) {
-        showFormFeedback('Por favor, corrige los errores en el formulario.', 'error');
+        showFormFeedback(t('form.feedback.invalid'), 'error');
         const firstError = contactForm.querySelector('.error');
         if (firstError) firstError.focus();
         return;
       }
 
       submitBtn.disabled = true;
-      submitBtn.textContent = 'Enviando...';
+      submitBtn.textContent = t('form.sending');
 
       const formData = {
         tipoCliente: contactForm.querySelector('input[name="tipoCliente"]:checked')?.value || '',
@@ -442,21 +460,15 @@
 
       simulateFormSubmit(formData)
         .then(function () {
-          showFormFeedback(
-            '¡Solicitud enviada con éxito! Un asesor de Samati se comunicará contigo pronto.',
-            'success'
-          );
+          showFormFeedback(t('form.feedback.success'), 'success');
           contactForm.reset();
         })
         .catch(function () {
-          showFormFeedback(
-            'Ocurrió un error al enviar el mensaje. Intenta de nuevo más tarde.',
-            'error'
-          );
+          showFormFeedback(t('form.feedback.error'), 'error');
         })
         .finally(function () {
           submitBtn.disabled = false;
-          submitBtn.textContent = 'Enviar mensaje';
+          submitBtn.textContent = t('form.submit');
         });
     });
   }
@@ -697,6 +709,186 @@
     });
 
     startTeamAutoAdvance();
+  }
+
+  document.addEventListener('samati:langchange', function () {
+    if (navToggle && nav) {
+      var isOpen = nav.classList.contains('open');
+      navToggle.setAttribute('aria-label', isOpen ? t('nav.toggle.close') : t('nav.toggle.open'));
+    }
+
+    if (contactForm) {
+      Object.keys(formFields).forEach(function (key) {
+        var field = formFields[key];
+        if (!field.el || !field.errorEl || !field.errorEl.textContent) return;
+        var error = field.validate(field.el.value);
+        if (error) showFieldError(field, error);
+      });
+
+      if (formFeedback && formFeedback.classList.contains('show')) {
+        if (formFeedback.classList.contains('form__feedback--success')) {
+          showFormFeedback(t('form.feedback.success'), 'success');
+        } else if (formFeedback.classList.contains('form__feedback--error')) {
+          var hasFieldError = contactForm.querySelector('.error');
+          showFormFeedback(
+            hasFieldError ? t('form.feedback.invalid') : t('form.feedback.error'),
+            'error'
+          );
+        }
+      }
+
+      if (submitBtn && !submitBtn.disabled) {
+        submitBtn.textContent = t('form.submit');
+      }
+    }
+  });
+
+  /* ----------------------------------------------------------
+     Slider — Página de servicios
+     ---------------------------------------------------------- */
+  const servicesSlider = document.getElementById('servicesSlider');
+  const servicesSliderTrack = document.getElementById('servicesSliderTrack');
+  const servicesSliderPrev = document.getElementById('servicesSliderPrev');
+  const servicesSliderNext = document.getElementById('servicesSliderNext');
+  const servicesSliderDots = document.getElementById('servicesSliderDots');
+
+  if (servicesSlider && servicesSliderTrack) {
+    const serviceSlides = servicesSliderTrack.querySelectorAll('.services-slide');
+    const servicesBgLayerA = document.querySelector('.services-showcase__bg-layer--a');
+    const servicesBgLayerB = document.querySelector('.services-showcase__bg-layer--b');
+    let serviceIndex = 0;
+    let serviceAutoTimer = null;
+    let serviceBgUsesLayerA = true;
+    const SERVICE_INTERVAL_MS = 8000;
+    const serviceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    function getServiceBg(index) {
+      const slide = serviceSlides[index];
+      return slide ? slide.getAttribute('data-bg') : '';
+    }
+
+    function setServiceBackground(index, instant) {
+      if (!servicesBgLayerA || !servicesBgLayerB) return;
+
+      const imageUrl = getServiceBg(index);
+      if (!imageUrl) return;
+
+      const visibleLayer = serviceBgUsesLayerA ? servicesBgLayerA : servicesBgLayerB;
+      const hiddenLayer = serviceBgUsesLayerA ? servicesBgLayerB : servicesBgLayerA;
+
+      if (visibleLayer.style.backgroundImage.indexOf(imageUrl) !== -1) return;
+
+      hiddenLayer.style.backgroundImage = "url('" + imageUrl + "')";
+
+      if (instant || serviceMotionQuery.matches) {
+        servicesBgLayerA.classList.remove('is-visible');
+        servicesBgLayerB.classList.remove('is-visible');
+        hiddenLayer.classList.add('is-visible');
+        serviceBgUsesLayerA = !serviceBgUsesLayerA;
+        return;
+      }
+
+      hiddenLayer.classList.add('is-visible');
+      visibleLayer.classList.remove('is-visible');
+      serviceBgUsesLayerA = !serviceBgUsesLayerA;
+    }
+
+    function buildServiceDots() {
+      if (!servicesSliderDots) return;
+
+      servicesSliderDots.innerHTML = '';
+      serviceSlides.forEach(function (_slide, index) {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'services-slider__dot' + (index === serviceIndex ? ' is-active' : '');
+        dot.setAttribute('role', 'tab');
+        dot.setAttribute('aria-label', 'Servicio ' + (index + 1));
+        dot.setAttribute('aria-selected', index === serviceIndex ? 'true' : 'false');
+        dot.addEventListener('click', function () {
+          goToServiceSlide(index);
+          startServiceAutoAdvance();
+        });
+        servicesSliderDots.appendChild(dot);
+      });
+    }
+
+    function updateServiceSlides() {
+      serviceSlides.forEach(function (slide, index) {
+        const isActive = index === serviceIndex;
+        slide.classList.toggle('is-active', isActive);
+        slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+      });
+
+      if (servicesSliderDots) {
+        servicesSliderDots.querySelectorAll('.services-slider__dot').forEach(function (dot, index) {
+          dot.classList.toggle('is-active', index === serviceIndex);
+          dot.setAttribute('aria-selected', index === serviceIndex ? 'true' : 'false');
+        });
+      }
+    }
+
+    function goToServiceSlide(index) {
+      serviceIndex = (index + serviceSlides.length) % serviceSlides.length;
+      updateServiceSlides();
+      setServiceBackground(serviceIndex, false);
+    }
+
+    function nextServiceSlide() {
+      goToServiceSlide(serviceIndex + 1);
+    }
+
+    function prevServiceSlide() {
+      goToServiceSlide(serviceIndex - 1);
+    }
+
+    function stopServiceAutoAdvance() {
+      if (serviceAutoTimer) {
+        window.clearInterval(serviceAutoTimer);
+        serviceAutoTimer = null;
+      }
+    }
+
+    function startServiceAutoAdvance() {
+      stopServiceAutoAdvance();
+      if (serviceMotionQuery.matches || serviceSlides.length <= 1) return;
+      serviceAutoTimer = window.setInterval(nextServiceSlide, SERVICE_INTERVAL_MS);
+    }
+
+    buildServiceDots();
+    updateServiceSlides();
+    setServiceBackground(serviceIndex, true);
+    startServiceAutoAdvance();
+
+    if (servicesSliderPrev) {
+      servicesSliderPrev.addEventListener('click', function () {
+        prevServiceSlide();
+        startServiceAutoAdvance();
+      });
+    }
+
+    if (servicesSliderNext) {
+      servicesSliderNext.addEventListener('click', function () {
+        nextServiceSlide();
+        startServiceAutoAdvance();
+      });
+    }
+
+    servicesSlider.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        nextServiceSlide();
+        startServiceAutoAdvance();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevServiceSlide();
+        startServiceAutoAdvance();
+      }
+    });
+
+    servicesSlider.addEventListener('mouseenter', stopServiceAutoAdvance);
+    servicesSlider.addEventListener('mouseleave', startServiceAutoAdvance);
+    servicesSlider.addEventListener('focusin', stopServiceAutoAdvance);
+    servicesSlider.addEventListener('focusout', startServiceAutoAdvance);
   }
 
 })();

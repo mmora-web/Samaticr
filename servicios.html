@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Conoce todos los servicios de Samati — Asesoría financiera, inversiones, planificación fiscal, consultoría empresarial y más.">
+  <title>Servicios | Samati — Soluciones Financieras</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@flaticon/flaticon-uicons@3.3.1/css/thin/straight.css">
+  <script>
+    (function () {
+      try {
+        var lang = localStorage.getItem('samati-lang');
+        if (lang === 'en' || lang === 'es') document.documentElement.lang = lang;
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body class="page-services">
+
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="index.html" class="header__logo" data-i18n-aria="logo.aria" aria-label="Samati — Inicio">
+        <img src="images/logo.png" alt="Samati — Soluciones Financieras" class="header__logo-img" width="220" height="72" data-i18n-alt="logo.alt">
+      </a>
+
+      <nav class="nav" id="nav" data-i18n-aria="nav.label" aria-label="Navegación principal">
+        <ul class="nav__list">
+          <li><a href="index.html#inicio" class="nav__link" data-i18n="nav.home">Inicio</a></li>
+          <li><a href="servicios.html" class="nav__link active" aria-current="page" data-i18n="nav.services">Servicios</a></li>
+          <li><a href="contacto.html" class="nav__link" data-i18n="nav.contact">Contacto</a></li>
+        </ul>
+      </nav>
+
+      <div class="header__tools">
+        <a href="contacto.html" class="btn btn--primary btn--sm header__cta" data-i18n="nav.cta">Contáctanos</a>
+        <button type="button" class="lang-switch" id="langSwitch" aria-label="Switch to English" data-lang="es">
+          <svg class="lang-switch__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M2 12h20"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          <span class="lang-switch__label">EN</span>
+        </button>
+      </div>
+
+      <button class="nav-toggle" id="navToggle" data-i18n-aria="nav.toggle.open" aria-label="Abrir menú de navegación" aria-expanded="false" aria-controls="nav">
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="services-showcase" id="servicios" aria-roledescription="carousel" aria-label="Servicios Samati">
+      <div class="services-showcase__bg" id="servicesShowcaseBg" aria-hidden="true">
+        <div class="services-showcase__bg-layer services-showcase__bg-layer--a is-visible"></div>
+        <div class="services-showcase__bg-layer services-showcase__bg-layer--b"></div>
+      </div>
+      <div class="services-showcase__overlay" aria-hidden="true"></div>
+
+      <div class="services-slider" id="servicesSlider">
+        <button type="button" class="services-slider__arrow services-slider__arrow--prev" id="servicesSliderPrev" data-i18n-aria="services.slider.prev" aria-label="Servicio anterior">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+
+        <div class="services-slider__viewport">
+          <div class="services-slider__track" id="servicesSliderTrack">
+
+            <article class="services-slide is-active" data-slide="0" data-bg="images/services-bg-meeting.png" aria-hidden="false">
+              <div class="services-slide__left">
+                <p class="services-slide__label" data-i18n="service.advisory.label">Asesoría Financiera</p>
+                <p class="services-slide__teaser" data-i18n="service.advisory.teaser">Orientación experta para optimizar recursos y reducir riesgos.</p>
+                <a href="contacto.html" class="services-slide__btn" data-i18n="services.slider.cta">Solicitar consulta</a>
+              </div>
+              <div class="services-slide__center" aria-hidden="true">
+                <div class="services-slide__visual">
+                  <!-- Asesoría: handshake-trust (Flaticon) -->
+                  <i class="fi fi-ts-handshake-trust service-icon service-icon--flaticon" aria-hidden="true"></i>
+                </div>
+              </div>
+              <div class="services-slide__right">
+                <h1 class="services-slide__headline" data-i18n="service.advisory.headline">Decisiones con confianza.</h1>
+                <p class="services-slide__desc" data-i18n="service.advisory.text">Orientación experta para optimizar recursos, reducir riesgos y alcanzar tus metas financieras a corto y largo plazo.</p>
+              </div>
+            </article>
+
+            <article class="services-slide" data-slide="1" data-bg="images/services-bg-contract.jpg" aria-hidden="true">
+              <div class="services-slide__left">
+                <p class="services-slide__label" data-i18n="service.invest.label">Gestión de Inversiones</p>
+                <p class="services-slide__teaser" data-i18n="service.invest.teaser">Portafolios diversificados alineados a tu perfil de riesgo.</p>
+                <a href="contacto.html" class="services-slide__btn" data-i18n="services.slider.cta">Solicitar consulta</a>
+              </div>
+              <div class="services-slide__center" aria-hidden="true">
+                <div class="services-slide__visual">
+                  <!-- Inversiones: gráfica financiera -->
+                  <svg class="service-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M10 48V28"/><path d="M24 48V18"/><path d="M38 48V32"/><path d="M52 48V12"/>
+                    <path d="M8 48h48"/><path d="M46 16l6-6"/><path d="M46 10h6v6"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="services-slide__right">
+                <h1 class="services-slide__headline" data-i18n="service.invest.headline">Crece tu patrimonio.</h1>
+                <p class="services-slide__desc" data-i18n="service.invest.text">Portafolios diversificados y estrategias de inversión alineadas con tu perfil de riesgo y objetivos de rendimiento.</p>
+              </div>
+            </article>
+
+            <article class="services-slide" data-slide="2" data-bg="images/services-bg-analytics.png" aria-hidden="true">
+              <div class="services-slide__left">
+                <p class="services-slide__label" data-i18n="service.tax.label">Planificación Fiscal</p>
+                <p class="services-slide__teaser" data-i18n="service.tax.teaser">Estrategias legales de optimización tributaria.</p>
+                <a href="contacto.html" class="services-slide__btn" data-i18n="services.slider.cta">Solicitar consulta</a>
+              </div>
+              <div class="services-slide__center" aria-hidden="true">
+                <div class="services-slide__visual">
+                  <!-- Fiscal: documento con porcentaje -->
+                  <svg class="service-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M18 8h20l10 10v34a4 4 0 0 1-4 4H18a4 4 0 0 1-4-4V12a4 4 0 0 1 4-4z"/>
+                    <path d="M38 8v10h10"/>
+                    <circle cx="28" cy="36" r="8"/>
+                    <path d="M24 36h8"/><path d="M28 32v8"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="services-slide__right">
+                <h1 class="services-slide__headline" data-i18n="service.tax.headline">Optimización inteligente.</h1>
+                <p class="services-slide__desc" data-i18n="service.tax.text">Estrategias legales de optimización tributaria para personas y empresas, maximizando eficiencia y cumplimiento.</p>
+              </div>
+            </article>
+
+            <article class="services-slide" data-slide="3" data-bg="images/services-bg-meeting.png" aria-hidden="true">
+              <div class="services-slide__left">
+                <p class="services-slide__label" data-i18n="service.consulting.label">Consultoría Empresarial</p>
+                <p class="services-slide__teaser" data-i18n="service.consulting.teaser">Análisis corporativo y decisiones estratégicas.</p>
+                <a href="contacto.html" class="services-slide__btn" data-i18n="services.slider.cta">Solicitar consulta</a>
+              </div>
+              <div class="services-slide__center" aria-hidden="true">
+                <div class="services-slide__visual">
+                  <!-- Consultoría: maletín ejecutivo -->
+                  <svg class="service-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="10" y="22" width="44" height="28" rx="3"/>
+                    <path d="M22 22v-4a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4v4"/>
+                    <path d="M10 34h44"/><path d="M32 34v16"/>
+                    <path d="M24 50h16"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="services-slide__right">
+                <h1 class="services-slide__headline" data-i18n="service.consulting.headline">Estrategia empresarial.</h1>
+                <p class="services-slide__desc" data-i18n="service.consulting.text">Análisis financiero corporativo, reestructuración, fusiones y apoyo en la toma de decisiones estratégicas.</p>
+              </div>
+            </article>
+
+            <article class="services-slide" data-slide="4" data-bg="images/services-bg-contract.jpg" aria-hidden="true">
+              <div class="services-slide__left">
+                <p class="services-slide__label" data-i18n="service.wealth.label">Planificación Patrimonial</p>
+                <p class="services-slide__teaser" data-i18n="service.wealth.teaser">Protección y transferencia de patrimonio.</p>
+                <a href="contacto.html" class="services-slide__btn" data-i18n="services.slider.cta">Solicitar consulta</a>
+              </div>
+              <div class="services-slide__center" aria-hidden="true">
+                <div class="services-slide__visual">
+                  <!-- Patrimonial: escudo de protección -->
+                  <svg class="service-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M32 8l18 8v14c0 12-8 20-18 24-10-4-18-12-18-24V16z"/>
+                    <path d="M22 32l6 6 14-14"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="services-slide__right">
+                <h1 class="services-slide__headline" data-i18n="service.wealth.headline">Protege tu legado.</h1>
+                <p class="services-slide__desc" data-i18n="service.wealth.text">Protección y transferencia de patrimonio con visión integral para familias y empresas familiares.</p>
+              </div>
+            </article>
+
+            <article class="services-slide" data-slide="5" data-bg="images/services-bg-analytics.png" aria-hidden="true">
+              <div class="services-slide__left">
+                <p class="services-slide__label" data-i18n="service.intl.label">Finanzas Internacionales</p>
+                <p class="services-slide__teaser" data-i18n="service.intl.teaser">Operaciones transfronterizas y estructuras globales.</p>
+                <a href="contacto.html" class="services-slide__btn" data-i18n="services.slider.cta">Solicitar consulta</a>
+              </div>
+              <div class="services-slide__center" aria-hidden="true">
+                <div class="services-slide__visual">
+                  <!-- Internacional: globo terráqueo -->
+                  <svg class="service-icon" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="32" cy="32" r="22"/>
+                    <ellipse cx="32" cy="32" rx="10" ry="22"/>
+                    <path d="M10 32h44"/>
+                    <path d="M14 20h36"/><path d="M14 44h36"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="services-slide__right">
+                <h1 class="services-slide__headline" data-i18n="service.intl.headline">Alcance global.</h1>
+                <p class="services-slide__desc" data-i18n="service.intl.text">Asesoría en operaciones transfronterizas, cambio de divisas y estructuras financieras globales.</p>
+              </div>
+            </article>
+
+          </div>
+        </div>
+
+        <button type="button" class="services-slider__arrow services-slider__arrow--next" id="servicesSliderNext" data-i18n-aria="services.slider.next" aria-label="Siguiente servicio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+
+      <div class="services-promo container">
+        <article class="services-promo-card">
+          <div class="services-promo-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="services-promo-card__body">
+            <h2 class="services-promo-card__title" data-i18n="services.promo.1.title">¿Primera consulta?</h2>
+            <p class="services-promo-card__text" data-i18n="services.promo.1.text">Agenda una sesión con nuestros asesores y conoce cómo podemos ayudarte.</p>
+            <a href="contacto.html" class="services-promo-card__link" data-i18n="services.promo.1.cta">Solicitar consulta →</a>
+          </div>
+        </article>
+
+        <article class="services-promo-card">
+          <div class="services-promo-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="services-promo-card__body">
+            <h2 class="services-promo-card__title" data-i18n="services.promo.2.title">Encuéntranos</h2>
+            <p class="services-promo-card__text" data-i18n="services.promo.2.text">Visítanos en Torre de Santa Ana, San José, Costa Rica.</p>
+            <a href="contacto.html#contacto-ubicacion" class="services-promo-card__link" data-i18n="services.promo.2.cta">Ver ubicación →</a>
+          </div>
+        </article>
+
+        <article class="services-promo-card">
+          <div class="services-promo-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="services-promo-card__body">
+            <h2 class="services-promo-card__title" data-i18n="services.promo.3.title">Asesoría personalizada</h2>
+            <p class="services-promo-card__text" data-i18n="services.promo.3.text">Soluciones integrales para personas y empresas con enfoque humano.</p>
+            <a href="contacto.html" class="services-promo-card__link" data-i18n="services.promo.3.cta">Conoce más →</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="services-promo-nav container">
+        <div class="services-slider__dots" id="servicesSliderDots" role="tablist" aria-label="Servicios"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <img src="images/logo.png" alt="Samati" class="footer__logo-img" width="190" height="62">
+        <p class="footer__tagline" data-i18n="footer.tagline">Soluciones financieras con confianza e innovación.</p>
+      </div>
+
+      <nav class="footer__nav" data-i18n-aria="footer.nav.aria" aria-label="Enlaces del pie de página">
+        <a href="index.html#inicio" data-i18n="nav.home">Inicio</a>
+        <a href="servicios.html" data-i18n="nav.services">Servicios</a>
+        <a href="contacto.html" data-i18n="nav.contact">Contacto</a>
+      </nav>
+
+      <p class="footer__copy">&copy; <span id="currentYear"></span> <span data-i18n="footer.copy">Samati. Todos los derechos reservados.</span></p>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
