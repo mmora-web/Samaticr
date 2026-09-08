@@ -6,6 +6,16 @@
   'use strict';
 
   var STORAGE_KEY = 'samati-lang';
+  /* Número móvil con WhatsApp activo (código país + número, sin + ni espacios).
+     Ejemplo Costa Rica: 50688881234 — NO usar línea fija (2222-xxxx). */
+  var WHATSAPP_PHONE = '50622223333';
+
+  function getWhatsAppHref(lang) {
+    var message = translations[lang] && translations[lang]['whatsapp.message']
+      ? translations[lang]['whatsapp.message']
+      : translations.es['whatsapp.message'];
+    return 'https://api.whatsapp.com/send?phone=' + WHATSAPP_PHONE + '&text=' + encodeURIComponent(message);
+  }
 
   var translations = {
     es: {
@@ -116,7 +126,15 @@
 
       'footer.tagline': 'Soluciones financieras con confianza e innovación.',
       'footer.nav.aria': 'Enlaces del pie de página',
+      'footer.nav.title': 'Navegación',
+      'footer.contact.title': 'Contacto',
+      'footer.cta': 'Agendar consulta',
+      'footer.address': 'Torre de Santa Ana, Santa Ana, San José, Costa Rica',
       'footer.copy': 'Samati. Todos los derechos reservados.',
+
+      'whatsapp.aria': 'Escríbenos por WhatsApp',
+      'whatsapp.title': 'Chatea con Samati en WhatsApp',
+      'whatsapp.message': 'Hola, me gustaría recibir más información sobre los servicios de Samati.',
 
       'contact.hero.title': 'Tu próxima decisión financiera merece <span class="contact-hero__title-highlight">asesoría experta</span>',
       'contact.hero.subtitle': 'En Samati acompañamos a personas y empresas con soluciones financieras claras, seguras y alineadas a sus objetivos. Cuéntanos tu situación y diseñemos juntos el camino.',
@@ -301,7 +319,15 @@
 
       'footer.tagline': 'Financial solutions with trust and innovation.',
       'footer.nav.aria': 'Footer links',
+      'footer.nav.title': 'Navigation',
+      'footer.contact.title': 'Contact',
+      'footer.cta': 'Book a consultation',
+      'footer.address': 'Torre de Santa Ana, Santa Ana, San José, Costa Rica',
       'footer.copy': 'Samati. All rights reserved.',
+
+      'whatsapp.aria': 'Message us on WhatsApp',
+      'whatsapp.title': 'Chat with Samati on WhatsApp',
+      'whatsapp.message': 'Hello, I would like to receive more information about Samati\'s services.',
 
       'contact.hero.title': 'Your next financial decision deserves <span class="contact-hero__title-highlight">expert advice</span>',
       'contact.hero.subtitle': 'At Samati we support individuals and companies with clear, secure financial solutions aligned with their goals. Tell us about your situation and let’s design the path together.',
@@ -438,6 +464,11 @@
     document.querySelectorAll('[data-i18n-title]').forEach(function (el) {
       el.setAttribute('title', t(el.getAttribute('data-i18n-title')));
     });
+
+    var whatsappBtn = document.getElementById('whatsappFloat');
+    if (whatsappBtn) {
+      whatsappBtn.href = getWhatsAppHref(lang);
+    }
 
     var map = document.querySelector('.contact__map iframe');
     if (map && map.src && map.src.indexOf('hl=' + lang) === -1) {

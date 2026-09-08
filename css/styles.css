@@ -1885,15 +1885,6 @@ button {
   border-color: rgba(114, 193, 229, 0.35);
 }
 
-  border: none;
-  padding: 0;
-  margin: 0 0 var(--space-md);
-}
-
-.form__fieldset .form__label {
-  margin-bottom: var(--space-sm);
-}
-
 .form__radio-group {
   display: flex;
   flex-wrap: wrap;
@@ -2390,54 +2381,127 @@ button {
    ============================================================ */
 
 .footer {
-  background-color: var(--color-primary-dark);
+  position: relative;
+  background: linear-gradient(180deg, var(--color-bg-dark) 0%, var(--color-primary-dark) 100%);
   color: var(--color-text-light);
-  padding-block: var(--space-lg);
+  padding-block: var(--space-xl) var(--space-md);
+  margin-top: auto;
 }
 
-.footer__inner {
+.footer__accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-accent-dark), var(--color-accent), var(--color-accent-dark));
+  opacity: 0.85;
+}
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: var(--space-xl);
+  padding-bottom: var(--space-lg);
+}
+
+.footer__brand {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-md);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+
+.footer__logo-link {
+  display: inline-flex;
 }
 
 .footer__logo-img {
-  height: 62px;
+  height: 58px;
   width: auto;
-  margin-bottom: var(--space-xs);
   filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.25));
 }
 
 .footer__tagline {
-  font-size: 0.875rem;
-  opacity: 0.7;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: rgba(241, 245, 249, 0.72);
+  max-width: 28ch;
+}
+
+.footer__cta {
+  margin-top: var(--space-xs);
+}
+
+.footer__heading {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: var(--space-md);
 }
 
 .footer__nav {
   display: flex;
-  gap: var(--space-lg);
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .footer__nav a {
-  font-size: 0.875rem;
-  transition: color var(--transition);
+  font-size: 0.9375rem;
+  color: rgba(241, 245, 249, 0.78);
+  transition: color 0.2s ease;
 }
 
 .footer__nav a:hover,
 .footer__nav a:focus-visible {
+  color: var(--color-accent-light);
+}
+
+.footer__contact {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.footer__contact-link,
+.footer__contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: rgba(241, 245, 249, 0.78);
+}
+
+.footer__contact-link {
+  transition: color 0.2s ease;
+}
+
+.footer__contact-link:hover,
+.footer__contact-link:focus-visible {
+  color: var(--color-accent-light);
+}
+
+.footer__contact-icon {
+  flex-shrink: 0;
+  width: 1.125rem;
+  height: 1.125rem;
+  margin-top: 0.125rem;
   color: var(--color-accent);
+}
+
+.footer__bottom {
+  padding-top: var(--space-md);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .footer__copy {
   font-size: 0.8125rem;
-  opacity: 0.6;
-  width: 100%;
+  color: rgba(241, 245, 249, 0.5);
   text-align: center;
-  margin-top: var(--space-sm);
-  padding-top: var(--space-md);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* ============================================================
@@ -2487,6 +2551,23 @@ button {
   .contact__layout--consult,
   .contact-location__grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 960px) {
+  .footer__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+  }
+
+  .footer__brand {
+    grid-column: 1 / -1;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer__tagline {
+    max-width: 36ch;
   }
 }
 
@@ -2648,13 +2729,28 @@ button {
     align-self: center;
   }
 
-  .footer__inner {
-    flex-direction: column;
+  .footer__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
     text-align: center;
   }
 
+  .footer__brand {
+    align-items: center;
+  }
+
+  .footer__tagline {
+    max-width: none;
+  }
+
   .footer__nav {
+    align-items: center;
+  }
+
+  .footer__contact-link,
+  .footer__contact-item {
     justify-content: center;
+    text-align: left;
   }
 }
 
@@ -2679,6 +2775,53 @@ button {
 
   .contact-hero__bg-media {
     inset: -6%;
+  }
+}
+
+/* ============================================================
+   Botón flotante de WhatsApp
+   ============================================================ */
+
+.whatsapp-float {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: var(--radius-pill);
+  background-color: #25D366;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+  transition: transform var(--transition), box-shadow var(--transition), background-color var(--transition);
+}
+
+.whatsapp-float:hover,
+.whatsapp-float:focus-visible {
+  transform: translateY(-2px) scale(1.05);
+  background-color: #20bd5a;
+  box-shadow: 0 8px 28px rgba(37, 211, 102, 0.5);
+}
+
+.whatsapp-float__icon {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+@media (max-width: 480px) {
+  .whatsapp-float {
+    right: 1rem;
+    bottom: 1rem;
+    width: 3.25rem;
+    height: 3.25rem;
+  }
+
+  .whatsapp-float__icon {
+    width: 1.625rem;
+    height: 1.625rem;
   }
 }
 
