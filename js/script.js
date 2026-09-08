@@ -39,6 +39,19 @@
   }
 
   function setActiveNavLink() {
+    const isContactPage = document.body.classList.contains('page-contact');
+
+    if (isContactPage) {
+      navLinks.forEach(function (link) {
+        link.classList.remove('active');
+        const href = link.getAttribute('href');
+        if (href === 'contacto.html' || href.endsWith('/contacto.html')) {
+          link.classList.add('active');
+        }
+      });
+      return;
+    }
+
     const scrollPos = window.scrollY + header.offsetHeight + 100;
 
     sections.forEach(function (section) {
@@ -49,7 +62,8 @@
       if (scrollPos >= top && scrollPos < top + height) {
         navLinks.forEach(function (link) {
           link.classList.remove('active');
-          if (link.getAttribute('href') === '#' + id) {
+          const href = link.getAttribute('href');
+          if (href === '#' + id || href.endsWith('#' + id)) {
             link.classList.add('active');
           }
         });
@@ -67,7 +81,7 @@
   /* ----------------------------------------------------------
      Zoom en scroll — fondos de sección (despliegue)
      ---------------------------------------------------------- */
-  const scrollZoomSections = document.querySelectorAll('.hero, .about, .team');
+  const scrollZoomSections = document.querySelectorAll('.hero, .about, .team, .contact-hero');
   let scrollZoomTicking = false;
   const scrollZoomMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -94,7 +108,7 @@
       return 1;
     }
 
-    if (section.classList.contains('hero')) {
+    if (section.classList.contains('hero') || section.classList.contains('contact-hero')) {
       const heroDeployDistance = Math.max(section.offsetHeight * 0.8, vh * 0.55);
       return Math.min(1, Math.max(0, window.scrollY / heroDeployDistance));
     }
@@ -102,20 +116,29 @@
     return Math.min(1, Math.max(0, (vh - rect.top) / deployDistance));
   }
 
+  function getScrollZoomLimits(section) {
+    if (section.classList.contains('contact-hero')) {
+      return { max: 1.1, min: 1, range: 0.1 };
+    }
+
+    return { max: SCROLL_ZOOM_MAX, min: SCROLL_ZOOM_MIN, range: SCROLL_ZOOM_RANGE };
+  }
+
   function getScrollZoomScale(section) {
     const rect = section.getBoundingClientRect();
     const vh = window.innerHeight;
+    const limits = getScrollZoomLimits(section);
 
     if (rect.top >= vh) {
-      return SCROLL_ZOOM_MAX;
+      return limits.max;
     }
 
     if (rect.bottom <= 0) {
-      return SCROLL_ZOOM_MIN;
+      return limits.min;
     }
 
     const progress = getScrollZoomProgress(section);
-    return SCROLL_ZOOM_MAX - easeScrollZoom(progress) * SCROLL_ZOOM_RANGE;
+    return limits.max - easeScrollZoom(progress) * limits.range;
   }
 
   const revealedSections = new WeakSet();
@@ -159,23 +182,30 @@
   if (scrollZoomSections.length) {
     function runHeroIntroDeploy() {
       const hero = document.querySelector('.hero');
-      const media = hero && hero.querySelector('.hero__bg-media');
-      if (!hero || scrollZoomMotionQuery.matches) return;
+      const contactHero = document.querySelector('.contact-hero');
+      const introHero = hero || contactHero;
+      const media = introHero && introHero.querySelector('[class*="__bg-media"]');
+
+      if (!introHero || scrollZoomMotionQuery.matches) {
+        if (contactHero) revealSectionContent(contactHero);
+        return;
+      }
 
       if (window.scrollY > 20) {
-        revealSectionContent(hero);
+        revealSectionContent(introHero);
         return;
       }
 
       if (!media) return;
 
-      revealSectionContent(hero);
+      revealSectionContent(introHero);
 
-      media.style.transform = 'scale(' + SCROLL_ZOOM_MAX + ')';
+      const heroZoom = getScrollZoomLimits(introHero);
+      media.style.transform = 'scale(' + heroZoom.max + ')';
       media.style.transition = 'transform 1.8s cubic-bezier(0.22, 1, 0.36, 1)';
 
       requestAnimationFrame(function () {
-        media.style.transform = 'scale(' + SCROLL_ZOOM_MIN + ')';
+        media.style.transform = 'scale(' + heroZoom.min + ')';
       });
 
       window.setTimeout(function () {
@@ -285,6 +315,14 @@
         return '';
       }
     },
+    servicio: {
+      el: document.getElementById('servicio'),
+      errorEl: document.getElementById('error-servicio'),
+      validate: function (value) {
+        if (!value.trim()) return 'Selecciona un área de consulta.';
+        return '';
+      }
+    },
     mensaje: {
       el: document.getElementById('mensaje'),
       errorEl: document.getElementById('error-mensaje'),
@@ -318,10 +356,15 @@
 
   Object.keys(formFields).forEach(function (key) {
     const field = formFields[key];
-    field.el.addEventListener('input', function () {
+    if (!field.el) return;
+
+    function handleFieldInput() {
       clearFieldError(field);
       hideFormFeedback();
-    });
+    }
+
+    field.el.addEventListener('input', handleFieldInput);
+    field.el.addEventListener('change', handleFieldInput);
 
     field.el.addEventListener('blur', function () {
       const error = field.validate(field.el.value);
@@ -336,6 +379,8 @@
 
     Object.keys(formFields).forEach(function (key) {
       const field = formFields[key];
+      if (!field.el) return;
+
       const error = field.validate(field.el.value);
 
       if (error) {
@@ -385,17 +430,20 @@
       submitBtn.textContent = 'Enviando...';
 
       const formData = {
+        tipoCliente: contactForm.querySelector('input[name="tipoCliente"]:checked')?.value || '',
         nombre: formFields.nombre.el.value.trim(),
         email: formFields.email.el.value.trim(),
         telefono: formFields.telefono.el.value.trim(),
-        asunto: formFields.asunto.el.value.trim(),
+        servicio: formFields.servicio && formFields.servicio.el
+          ? formFields.servicio.el.value.trim()
+          : (formFields.asunto && formFields.asunto.el ? formFields.asunto.el.value.trim() : ''),
         mensaje: formFields.mensaje.el.value.trim()
       };
 
       simulateFormSubmit(formData)
         .then(function () {
           showFormFeedback(
-            '¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.',
+            '¡Solicitud enviada con éxito! Un asesor de Samati se comunicará contigo pronto.',
             'success'
           );
           contactForm.reset();
@@ -410,6 +458,37 @@
           submitBtn.disabled = false;
           submitBtn.textContent = 'Enviar mensaje';
         });
+    });
+  }
+
+  /* ----------------------------------------------------------
+     Revelado al scroll — secciones sin zoom de fondo
+     ---------------------------------------------------------- */
+  const revealElements = document.querySelectorAll('.section-reveal:not(.is-visible)');
+
+  if (scrollZoomMotionQuery.matches) {
+    revealElements.forEach(function (el) {
+      el.classList.add('is-visible');
+    });
+  } else if ('IntersectionObserver' in window && revealElements.length) {
+    const revealObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -48px 0px' }
+    );
+
+    revealElements.forEach(function (el) {
+      revealObserver.observe(el);
+    });
+  } else {
+    revealElements.forEach(function (el) {
+      el.classList.add('is-visible');
     });
   }
 
@@ -440,7 +519,41 @@
     });
   }
 
-  document.querySelectorAll('.team-card__img').forEach(function (img) {
+  /* ----------------------------------------------------------
+     Áreas de consulta — precargar formulario
+     ---------------------------------------------------------- */
+  const consultCards = document.querySelectorAll('.contact-consult__card');
+  const servicioSelect = document.getElementById('servicio');
+  const contactFormSection = document.getElementById('contacto-formulario');
+
+  consultCards.forEach(function (card) {
+    card.addEventListener('click', function () {
+      const servicio = card.getAttribute('data-servicio');
+
+      consultCards.forEach(function (c) {
+        c.classList.remove('is-selected');
+      });
+      card.classList.add('is-selected');
+
+      if (servicioSelect && servicio) {
+        servicioSelect.value = servicio;
+        if (formFields.servicio) {
+          clearFieldError(formFields.servicio);
+        }
+      }
+
+      if (contactFormSection) {
+        contactFormSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      window.setTimeout(function () {
+        const focusTarget = servicioSelect || document.getElementById('nombre');
+        if (focusTarget) focusTarget.focus();
+      }, 500);
+    });
+  });
+
+  document.querySelectorAll('.team-card__img, .contact-location__photo-img').forEach(function (img) {
     img.addEventListener('error', function () {
       this.remove();
     });
